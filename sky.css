@@ -1,0 +1,36 @@
+/* Sunset cloud-sea hero. Owns: .sky-canvas, .sky-video, hero base gradient, text scrim, bottom fade, fallback. */
+.home-hero{
+  background:
+    radial-gradient(40% 14% at 62% 14%, rgba(255,227,199,.9), transparent 70%),
+    linear-gradient(180deg,#F8D9CF 0%,#F2B8B0 14%,#C58E9F 34%,#8B76A8 62%,#6B5580 84%,#5A4466 100%);
+}
+.sky-canvas,.sky-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;display:block;pointer-events:none}
+.sky-video{object-fit:cover}
+/* phones: real clip; desktop: WebGL canvas */
+@media (max-width:767px){.sky-canvas{display:none}.sky-video{display:block}}
+@media (min-width:768px){.sky-video{display:block;object-position:50% 38%;transform:scale(1.04);filter:saturate(1.08) contrast(1.03)}.sky-canvas{z-index:1;mix-blend-mode:screen;opacity:.38}}
+/* soft radial scrim only behind the headline (cream text >=4.5:1); bottom melts into cream */
+.home-hero::after{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(253,243,233,0) 82%,#FDF3E9 100%),
+    radial-gradient(ellipse 720px 460px at 26% 360px,rgba(90,68,102,.62),rgba(90,68,102,.3) 55%,rgba(90,68,102,0) 100%);
+}
+@media (max-width:767px){
+  .home-hero::after{background:
+    linear-gradient(180deg,rgba(253,243,233,0) 80%,#FDF3E9 100%),
+    linear-gradient(180deg,rgba(90,68,102,.15) 0,rgba(90,68,102,.62) 30%,rgba(90,68,102,.62) 100%)}
+}
+/* Fallback (no WebGL): three blurred drifting blobs. Static under reduced motion. */
+.sky-fallback{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.sky-fallback i{position:absolute;border-radius:50%;filter:blur(60px);opacity:.8;will-change:transform}
+.sky-fallback i:nth-child(1){width:60%;height:45%;left:-10%;top:25%;background:radial-gradient(closest-side,#F2A7A6,transparent);animation:skyDriftA 90s ease-in-out infinite alternate}
+.sky-fallback i:nth-child(2){width:55%;height:40%;right:-8%;top:45%;background:radial-gradient(closest-side,#F4B196,transparent);animation:skyDriftB 120s ease-in-out infinite alternate}
+.sky-fallback i:nth-child(3){width:50%;height:35%;left:25%;top:8%;background:radial-gradient(closest-side,#FFE3C7,transparent);opacity:.6;animation:skyDriftC 105s ease-in-out infinite alternate}
+@keyframes skyDriftA{to{transform:translate3d(28%,8%,0) scale(1.15)}}
+@keyframes skyDriftB{to{transform:translate3d(-30%,-6%,0) scale(1.1)}}
+@keyframes skyDriftC{to{transform:translate3d(-20%,-4%,0) scale(1.2)}}
+@media (prefers-reduced-motion:reduce){
+  .sky-fallback i{animation:none}
+  .sky-canvas{display:none}
+}
